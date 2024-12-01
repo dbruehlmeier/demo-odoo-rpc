@@ -1,5 +1,5 @@
 # PoC N8N-Odoo
-In this Proof-of-Concept, the goal is to test if calculated fields are consistently updated
+The goal of this Proof-of-Concept (PoC) is to test if calculated fields are consistently updated
 when using N8N (with JSON-RPC) to update a contact.
 
 ## Installation
@@ -14,8 +14,8 @@ when using N8N (with JSON-RPC) to update a contact.
 - Database Name: ``poc``
 - Email: ``admin``
 - Password: ``admin``
-- Demo data ``check``
-- Create database
+- Demo data: ``check``
+- Click: Create database
 - Login: ``admin/admin``
 
 ### N8N
