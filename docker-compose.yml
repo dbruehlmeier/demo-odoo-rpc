@@ -39,6 +39,13 @@ services:
       - "5678:5678"
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./n8n_workflows.json:/home/node/n8n_workflows.json
+      - ./n8n_credentials.json:/home/node/n8n_credentials.json
+    entrypoint: >
+      /bin/sh -c '
+      n8n import:credentials --input=/home/node/n8n_credentials.json;
+      n8n import:workflow --input=/home/node/n8n_workflows.json;
+      n8n start'
     restart: unless-stopped
 
 networks:
