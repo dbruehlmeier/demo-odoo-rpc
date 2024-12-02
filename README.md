@@ -10,7 +10,21 @@ calculated fields are consistently updated
 ## Installation
 - Install Docker Compose
 - Clone this repo
-- Run ``docker-compose up``
+- Install the [Ansible Odoo Scripts](https://ansible.build/scripts.html#odoo-scripts) ``curl -L https://raw.githubusercontent.com/mint-system/ansible-build/main/roles/odoo_scripts/files/install | bash``
+
+
+## Scenario 1: Direct installation
+In this scenario, the module is installed directly when launching Odoo, by
+adding ``--init demo_rpc_write`` to the launch command in Docker Compose.
+- Run ``docker-compose -f docker-compose_with-installation.yml up``
+
+
+## Scenario 2: Installation with Ansible
+In this scenario, the module is installed after launching Odoo, by
+launching ``docker-odoo-init`` with the running container.
+- Run ``docker-compose -f docker-compose_without-installation.yml up``
+- Run ``docker-odoo-init -c "demo-odoo-rpc_odoo_1" -d "poc" -i "demo_rpc_write"``
+
 
 ## Setup
 ### Odoo

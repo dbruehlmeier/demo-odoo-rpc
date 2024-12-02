@@ -1,0 +1,52 @@
+version: '3.8'
+
+volumes:
+  n8n_data:
+  postgres_data:
+  odoo_data:
+
+services:
+  odoo:
+    image: odoo:16.0
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      - ./odoo_addons:/mnt/extra-addons
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_USER: odoo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n_workflows.json:/home/node/n8n_workflows.json
+      - ./n8n_credentials.json:/home/node/n8n_credentials.json
+    entrypoint: >
+      /bin/sh -c '
+      n8n import:credentials --input=/home/node/n8n_credentials.json;
+      n8n import:workflow --input=/home/node/n8n_workflows.json;
+      n8n start'
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
