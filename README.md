@@ -2,22 +2,20 @@
 The goal of this Proof-of-Concept (PoC) is to test if calculated fields are consistently updated
 when using N8N (with JSON-RPC) to update a contact.
 
-**Results**
-- For both methods (using the @api.depends decorator and overwriting the write() method), the
-calculated fields are consistently updated
-- Tested with Odoo 16 and Odoo 17
-
 ## Installation
 - Install Docker Compose
 - Clone this repo
 - Install the [Ansible Odoo Scripts](https://ansible.build/scripts.html#odoo-scripts) ``curl -L https://raw.githubusercontent.com/mint-system/ansible-build/main/roles/odoo_scripts/files/install | bash``
-
 
 ## Scenario 1: Direct installation
 In this scenario, the module is installed directly when launching Odoo, by
 adding ``--init demo_rpc_write`` to the launch command in Docker Compose.
 - Run ``docker-compose -f docker-compose_with-installation.yml up``
 
+**Results**
+- For both methods (using the @api.depends decorator and overwriting the write() method), the
+calculated fields are consistently updated
+- Tested with Odoo 16 and Odoo 17
 
 ## Scenario 2: Installation with Ansible
 In this scenario, the module is installed after launching Odoo, by
@@ -25,6 +23,12 @@ launching ``docker-odoo-init`` with the running container.
 - Run ``docker-compose -f docker-compose_without-installation.yml up``
 - Run ``docker-odoo-init -c "demo-odoo-rpc_odoo_1" -d "poc" -i "demo_rpc_write"``
 
+**Results**
+- For both methods (using the @api.depends decorator and overwriting the write() method), the
+calculated fields are consistently updated **if the container is restarted**.
+- Without a restart, Odoo seems to fall into an undefined state, which caused different problems
+after each test run.
+- Tested with Odoo 16
 
 ## Setup
 ### Odoo
